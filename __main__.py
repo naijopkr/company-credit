@@ -9,7 +9,7 @@ df.describe()
 
 sns.set_style('whitegrid')
 
-def plot_hist():
+def hist_credit_policy():
     plt.figure(figsize=(10, 6))
     df[df['credit.policy'] == 1]['fico'].hist(
         bins=30,
@@ -27,7 +27,7 @@ def plot_hist():
     plt.xlabel('FICO')
 
 
-def countplot():
+def count_purpose():
     plt.figure(figsize=(10, 10))
     ax = sns.countplot(
         x=df['purpose'],
@@ -40,7 +40,11 @@ def countplot():
     )
     plt.tight_layout()
 
-def lmplot():
+def joint_fico_intrate():
+    sns.jointplot(x='fico', y='int.rate', data=df, color='purple')
+
+
+def lm_fico_intrate():
     sns.lmplot(
         x='fico',
         y='int.rate',
@@ -51,10 +55,12 @@ def lmplot():
     )
 
 
-plot_hist()
+hist_credit_policy()
 
-countplot()
+count_purpose()
 
-sns.jointplot(x='fico', y='int.rate', data=df, color='purple')
+joint_fico_intrate()
 
-lmplot()
+lm_fico_intrate()
+
+# Setting up the data
