@@ -105,3 +105,23 @@ y_rfc_pred = rfc.predict(X_test)
 # Evaluate RFC
 print_cm(confusion_matrix(y_test, y_rfc_pred))
 print(classification_report(y_test, y_rfc_pred))
+
+# Print decision tree image
+from IPython.display import Image
+from io import StringIO
+from sklearn.tree import export_graphviz
+import pydot
+
+features = list(final_data.columns[1:])
+features
+
+dot_data = StringIO()
+export_graphviz(
+    dtree,
+    out_file=dot_data,
+    feature_names=features,
+    filled=True,
+    rounded=True
+)
+graph = pydot.graph_from_dot_data(dot_data.getvalue())
+Image(graph[0].create_png())
