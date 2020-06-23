@@ -54,7 +54,6 @@ def lm_fico_intrate():
         palette='coolwarm'
     )
 
-
 hist_credit_policy()
 
 count_purpose()
@@ -64,3 +63,45 @@ joint_fico_intrate()
 lm_fico_intrate()
 
 # Setting up the data
+
+# Categorigal features
+cat_feats = ['purpose']
+final_data = pd.get_dummies(df, columns=cat_feats, drop_first=True)
+final_data.head()
+
+# Train test split
+X = final_data.drop('not.fully.paid', axis=1)
+y = final_data['not.fully.paid']
+
+from sklearn.model_selection import train_test_split
+
+
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3,random_state=101)
+
+# Training Decision Tree Model
+from sklearn.tree import DecisionTreeClassifier
+
+dtree = DecisionTreeClassifier()
+dtree.fit(X_train, y_train)
+
+y_dtree_pred = dtree.predict(X_test)
+
+# Evaluate decision tree
+from sklearn.metrics import classification_report, confusion_matrix
+from utils import print_cm
+
+print_cm(confusion_matrix(y_test, y_dtree_pred))
+print(classification_report(y_test, y_dtree_pred))
+
+
+# Training Random Forest model
+from sklearn.ensemble import RandomForestClassifier
+
+rfc = RandomForestClassifier(n_estimators=200)
+rfc.fit(X_train, y_train)
+
+y_rfc_pred = rfc.predict(X_test)
+
+# Evaluate RFC
+print_cm(confusion_matrix(y_test, y_rfc_pred))
+print(classification_report(y_test, y_rfc_pred))
