@@ -1,2 +1,5 @@
-if __name__ == '__main__':
-    print('Hello world')
+import pandas as pd
+
+df = pd.read_csv('./data/loan_data.csv')
+df.head()
+df.info()
